@@ -4,10 +4,14 @@
 
 #
 # 1st max96712 -> i2c_bus=2, deser_addr=0x4b
-# 2nd max96712 -> not worked
+# 2nd max96712 -> i2c_bus=2, deser_addr=0x6b
 # 4th max96712 -> i2c_bus=7, deser_addr=0x4b
 # 3rd max96712 -> i2c_bus=7, deser_addr=0x6b
 #
+
+echo arg1=$1
+echo arg2=$2
+echo arg3=$3
 
 I2C_SWITCH=2
 if [ $1 ]; then
@@ -17,6 +21,30 @@ fi
 DESER_ADDR=0x4b
 if [ $2 ]; then
     DESER_ADDR=$2
+fi
+
+# default serializer 7bit addr
+SER_DEFAULT=0x40
+
+# new serializer addr
+if [[ $DESER_ADDR -eq 0x4b ]]; then
+    SER0_7B=0x21
+    SER1_7B=0x22
+    SER2_7B=0x23
+    SER3_7B=0x24
+    SER0_8B=0x42
+    SER1_8B=0x44
+    SER2_8B=0x46
+    SER3_8B=0x48
+else
+    SER0_7B=0x31
+    SER1_7B=0x32
+    SER2_7B=0x33
+    SER3_7B=0x34
+    SER0_8B=0x62
+    SER1_8B=0x64
+    SER2_8B=0x66
+    SER3_8B=0x68
 fi
 
 function red_print() {
@@ -40,10 +68,29 @@ echo 1:${camera_array[1]}
 echo 2:${camera_array[2]}
 echo 3:${camera_array[3]}
 
-green_print "Press select your camera type:"
-read key
+if [ -z $3 ]; then
+    # if arg $3 not exists:
+    green_print "Press select your camera type:"
+	read key
+else
+	key=$3
+fi
+echo key=$key
 
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x0b 0x00  # MIPI CSI disable
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x0B 0x00  # MIPI CSI disable
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF0  # disable all 4 Links in GMSL2 mode
+
+# start MIPI de-skew before video streaming are received
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x03 0x80
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x04 0x91
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x43 0x80
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x44 0x91
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x83 0x80
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x84 0x91
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xC3 0x80
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xC4 0x91
+# de-skew done
+
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xFF  # Enable all 4 Links in GMSL2 mode
 
 sleep 0.1
@@ -121,11 +168,11 @@ if [ ${camera_array[key]} == sg3-isx031-gmsl2 ]; then
     # i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1B 0x35
     # i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1E 0x35
     # green_print "MIPI Speed 2.1Gbps"
-    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x15 0x39
-    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x18 0x39
-    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1B 0x39
-    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1E 0x39
-    green_print "MIPI Speed 2.5Gbps"
+    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x15 0x37
+    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x18 0x37
+    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1B 0x37
+    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1E 0x37
+    green_print "MIPI Speed 2.3Gbps"
 else
 #    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x15 0x37
 #    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x18 0x37
@@ -148,27 +195,27 @@ i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF1 # Enable LinkA
 
 sleep 1
 
-i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xBE 0x10
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xBE 0x10
 sleep 1
-i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x03 0x18 0x5E
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x03 0x18 0x5E
 
 if [ ${camera_array[key]} == sg5-imx490-gmsl2 ]; then
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD6 0x10
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD3 0x10
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD6 0x10
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD3 0x10
 else
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD6 0x00
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD3 0x00
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD6 0x00
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD3 0x00
 fi
 sleep 0.5
 if [ ${camera_array[key]} == sg5-imx490-gmsl2 ]; then
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD6 0x00
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD3 0x00
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD6 0x00
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD3 0x00
 else
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD6 0x10
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD3 0x10
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD6 0x10
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD3 0x10
 fi
 
-i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x00 0x00 0x82
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x00 0x00 $SER0_8B
 
 # 9295-B/96717-B
 echo "[sensors]: serializer-b"
@@ -176,27 +223,27 @@ i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF2 # Enable LinkB
 
 sleep 1
 
-i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xBE 0x10
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xBE 0x10
 sleep 1
-i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x03 0x18 0x5E
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x03 0x18 0x5E
 
 if [ ${camera_array[key]} == sg5-imx490-gmsl2 ]; then
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD6 0x10
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD3 0x10
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD6 0x10
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD3 0x10
 else
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD6 0x00
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD3 0x00
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD6 0x00
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD3 0x00
 fi
 sleep 0.5
 if [ ${camera_array[key]} == sg5-imx490-gmsl2 ]; then
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD6 0x00
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD3 0x00
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD6 0x00
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD3 0x00
 else
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD6 0x10
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD3 0x10
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD6 0x10
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD3 0x10
 fi
 
-i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x00 0x00 0x84
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x00 0x00 $SER1_8B
 
 # 9295-C/96717-C
 echo "[sensors]: serializer-c"
@@ -204,27 +251,27 @@ i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF4 # Enable LinkC
 
 sleep 1
 
-i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xBE 0x10
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xBE 0x10
 sleep 1
-i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x03 0x18 0x5E
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x03 0x18 0x5E
 
 if [ ${camera_array[key]} == sg5-imx490-gmsl2 ]; then
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD6 0x10
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD3 0x10
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD6 0x10
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD3 0x10
 else
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD6 0x00
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD3 0x00
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD6 0x00
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD3 0x00
 fi
 sleep 0.5
 if [ ${camera_array[key]} == sg5-imx490-gmsl2 ]; then
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD6 0x00
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD3 0x00
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD6 0x00
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD3 0x00
 else
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD6 0x10
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD3 0x10
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD6 0x10
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD3 0x10
 fi
 
-i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x00 0x00 0x86
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x00 0x00 $SER2_8B
 
 # 9295-D/96717-D
 echo "[sensors]: serializer-d"
@@ -232,27 +279,27 @@ i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF8 # Enable LinkD
 
 sleep 1
 
-i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xBE 0x10
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xBE 0x10
 sleep 1
-i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x03 0x18 0x5E
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x03 0x18 0x5E
 
 if [ ${camera_array[key]} == sg5-imx490-gmsl2 ]; then
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD6 0x10
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD3 0x10
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD6 0x10
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD3 0x10
 else
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD6 0x00
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD3 0x00
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD6 0x00
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD3 0x00
 fi
 sleep 0.5
 if [ ${camera_array[key]} == sg5-imx490-gmsl2 ]; then
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD6 0x00
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD3 0x00
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD6 0x00
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD3 0x00
 else
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD6 0x10
-    i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x02 0xD3 0x10
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD6 0x10
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD3 0x10
 fi
 
-i2ctransfer -f -y $I2C_SWITCH w3@0x40 0x00 0x00 0x88
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x00 0x00 $SER3_8B
 
 sleep 0.5
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xFF # Enable all 4 Links in GMSL2 mode
