@@ -15,20 +15,20 @@ sudo i2ctransfer -f -y 7 w2@0x29 0x01 0x00
 #deser0
 sudo i2ctransfer -f -y 1 w2@0x28 0x01 0x0F # power up cameras
 sleep 0.1
-sudo ./config.sh 2 0x4b 2
+sudo ./config.sh 2 0x4b 3
 
 #deser1
 sudo i2ctransfer -f -y 1 w2@0x29 0x01 0x0F # power up cameras
 sleep 0.1
-sudo ./config.sh 2 0x6b 2
+sudo ./config.sh 2 0x6b 3
 
 #deser2
 sudo i2ctransfer -f -y 7 w2@0x28 0x01 0x0F # power up cameras
 sleep 0.1
-sudo ./config.sh 7 0x4b 3
+sudo ./config.sh 7 0x4b 2
 
 #deser3
 sudo i2ctransfer -f -y 7 w2@0x29 0x01 0x0F # power up cameras
 sleep 0.1
-sudo ./config.sh 7 0x6b 1
+sudo ./config.sh 7 0x6b 2
 

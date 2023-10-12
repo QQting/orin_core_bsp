@@ -77,6 +77,25 @@ else
 fi
 echo key=$key
 
+# off/on power to reset cameras
+if [[ $I2C_SWITCH -eq 2 ]]; then
+	POWER_PROTECT_BUS=1
+else
+	POWER_PROTECT_BUS=7
+fi
+if [[ $DESER_ADDR -eq $((16#4b)) ]]; then
+        POWER_PROTECT=0x28
+else
+        POWER_PROTECT=0x29
+fi
+echo POWER_PROTECT_BUS=$POWER_PROTECT_BUS
+echo POWER_PROTECT=$POWER_PROTECT
+i2ctransfer -f -y $POWER_PROTECT_BUS w2@$POWER_PROTECT 0x01 0x00 # power down
+sleep 0.1
+i2ctransfer -f -y $POWER_PROTECT_BUS w2@$POWER_PROTECT 0x01 0x0F # power up
+sleep 0.1
+
+
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x0b 0x00  # MIPI CSI disable
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF0  # disable all 4 Links in GMSL2 mode
 

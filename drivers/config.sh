@@ -77,21 +77,27 @@ else
 fi
 echo key=$key
 
+# off/on power to reset cameras
+if [[ $I2C_SWITCH -eq 2 ]]; then
+	POWER_PROTECT_BUS=1
+else
+	POWER_PROTECT_BUS=7
+fi
+if [[ $DESER_ADDR -eq $((16#4b)) ]]; then
+        POWER_PROTECT=0x28
+else
+        POWER_PROTECT=0x29
+fi
+echo POWER_PROTECT_BUS=$POWER_PROTECT_BUS
+echo POWER_PROTECT=$POWER_PROTECT
+i2ctransfer -f -y $POWER_PROTECT_BUS w2@$POWER_PROTECT 0x01 0x00 # power down
+sleep 0.1
+i2ctransfer -f -y $POWER_PROTECT_BUS w2@$POWER_PROTECT 0x01 0x0F # power up
+sleep 0.1
+
+
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x0B 0x00  # MIPI CSI disable
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF0  # disable all 4 Links in GMSL2 mode
-
-# start MIPI de-skew before video streaming are received
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x03 0x80
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x04 0x91
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x43 0x80
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x44 0x91
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x83 0x80
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x84 0x91
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xC3 0x80
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xC4 0x91
-# de-skew done
-
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xFF  # Enable all 4 Links in GMSL2 mode
 
 sleep 0.1
 
@@ -168,11 +174,11 @@ if [ ${camera_array[key]} == sg3-isx031-gmsl2 ]; then
     # i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1B 0x35
     # i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1E 0x35
     # green_print "MIPI Speed 2.1Gbps"
-    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x15 0x37
-    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x18 0x37
-    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1B 0x37
-    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1E 0x37
-    green_print "MIPI Speed 2.3Gbps"
+    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x15 0x38
+    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x18 0x38
+    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1B 0x38
+    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1E 0x38
+    green_print "MIPI Speed 2.4Gbps"
 else
 #    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x15 0x37
 #    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x18 0x37
@@ -303,12 +309,14 @@ i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x00 0x00 $SER3_8B
 
 sleep 0.5
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xFF # Enable all 4 Links in GMSL2 mode
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x18 0x0F
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x18 0x0F # One-shot reset
 sleep 0.1
+
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x0B 0x02 # Enable MIPI CSI
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x08 0xA0 0x84 # Force all MIPI clocks running
 
 sleep 0.5
+
 echo "[96712-bit3]: GMSL2 link locked"
 val=$(i2ctransfer -f -y $I2C_SWITCH w2@$DESER_ADDR 0x00 0x1A r1)
 echo LINK A: $val
