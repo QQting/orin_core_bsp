@@ -1,38 +1,17 @@
 PWD ?= $(shell pwd)
 BUILD_DIR ?= $(shell pwd)
-
 ARCH ?= arm64
-CROSS_COMPILE ?= aarch64-buildroot-linux-gnu-
-
 obj-m := gmsl2_sensors.o
-
-KERNEL_SRC_DIR ?= /work/nvidia/source/Linux_for_Tegra/sources/kernel/kernel-5.10
-KERNEL_OUT_DIR ?= /work/nvidia/source/Linux_for_Tegra/sources/kernel_out
-
-TARGET_SENSING_SENSORS_DTS := tegra234-p3737-camera-sensing-overlay
+KERNEL_SRC_DIR  ?= /lib/modules/$(shell uname -r)/build
 
 .PHONY: all
-all: clean defconfig modules dtbo
-
-defconfig:
-	make -C "${KERNEL_SRC_DIR}" ARCH="${ARCH}" O="${KERNEL_OUT_DIR}" \
-		LOCALVERSION="-tegra" \
-		CROSS_COMPILE="${CROSS_COMPILE}" \
-		tegra_defconfig
+all: clean modules
 
 modules:
-	make -C "${KERNEL_SRC_DIR}" ARCH="${ARCH}" O="${KERNEL_OUT_DIR}" src="${PWD}" M="${BUILD_DIR}" \
-		LOCALVERSION="-tegra" \
-		CROSS_COMPILE="${CROSS_COMPILE}" \
+	make -C "${KERNEL_SRC_DIR}" ARCH="${ARCH}" src="${PWD}" M="${BUILD_DIR}" \
 		-j4 \
-		--output-sync=target modules
-
-dtbo:
-	dtc -O dtb -o "${TARGET_SENSING_SENSORS_DTS}".dtbo -@ "${TARGET_SENSING_SENSORS_DTS}".dts
+		modules
 
 clean:
-	make -C "${KERNEL_SRC_DIR}" ARCH="${ARCH}" O="${KERNEL_OUT_DIR}" src="${PWD}" M="${BUILD_DIR}" \
-		LOCALVERSION="-tegra" \
-		CROSS_COMPILE="${CROSS_COMPILE}" \
+	make -C "${KERNEL_SRC_DIR}" ARCH="${ARCH}" src="${PWD}" M="${BUILD_DIR}" \
 		clean
-	rm -rf "${TARGET_SENSING_SENSORS_DTS}".dtbo
