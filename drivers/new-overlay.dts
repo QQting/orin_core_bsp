@@ -1,0 +1,156 @@
+/dts-v1/;
+/plugin/;
+ 
+/*
+ * Copyright (c) 2017-2022, NVIDIA CORPORATION.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+ 
+/ {
+    overlay-name = "New GMSL2 Camera Device Tree Overlay";
+    compatible = "nvidia,p3737-0000+p3701-0000", "nvidia,tegra234", "nvidia,tegra23x";
+    jetson-header-name = "Jetson AGX CSI Connector";
+
+
+    fragment@0 {
+      target-path = "/i2c@3180000/sensing_sensors_0";
+      __overlay__ {
+        mode1 {
+            serdes_pix_clk_hz = "625000000";
+        };
+      };
+    };
+    fragment@1 {
+      target-path = "/i2c@3180000/sensing_sensors_1";
+      __overlay__ {
+        mode1 {
+            serdes_pix_clk_hz = "625000000";
+        };
+      };
+    };
+    fragment@2 {
+      target-path = "/i2c@3180000/sensing_sensors_2";
+      __overlay__ {
+        mode1 {
+            serdes_pix_clk_hz = "625000000";
+        };
+      };
+    };
+    fragment@3 {
+      target-path = "/i2c@3180000/sensing_sensors_3";
+      __overlay__ {
+        mode1 {
+            serdes_pix_clk_hz = "625000000";
+        };
+      };
+    };
+    fragment@4 {
+      target-path = "/i2c@3180000/sensing_sensors_4";
+      __overlay__ {
+        mode1 {
+            serdes_pix_clk_hz = "625000000";
+        };
+      };
+    };
+    fragment@5 {
+      target-path = "/i2c@3180000/sensing_sensors_5";
+      __overlay__ {
+        mode1 {
+            serdes_pix_clk_hz = "625000000";
+        };
+      };
+    };
+    fragment@6 {
+      target-path = "/i2c@3180000/sensing_sensors_6";
+      __overlay__ {
+        mode1 {
+            serdes_pix_clk_hz = "625000000";
+        };
+      };
+    };
+    fragment@7 {
+      target-path = "/i2c@3180000/sensing_sensors_7";
+      __overlay__ {
+        mode1 {
+            serdes_pix_clk_hz = "625000000";
+        };
+      };
+    };
+    fragment@8 {
+      target-path = "/i2c@c250000/sensing_sensors_8";
+      __overlay__ {
+        mode1 {
+            serdes_pix_clk_hz = "625000000";
+        };
+      };
+    };
+    fragment@9 {
+      target-path = "/i2c@c250000/sensing_sensors_9";
+      __overlay__ {
+        mode1 {
+            serdes_pix_clk_hz = "625000000";
+        };
+      };
+    };
+    fragment@10 {
+      target-path = "/i2c@c250000/sensing_sensors_10";
+      __overlay__ {
+        mode1 {
+            serdes_pix_clk_hz = "625000000";
+        };
+      };
+    };
+    fragment@11 {
+      target-path = "/i2c@c250000/sensing_sensors_11";
+      __overlay__ {
+        mode1 {
+            serdes_pix_clk_hz = "625000000";
+        };
+      };
+    };
+    fragment@12 {
+      target-path = "/i2c@c250000/sensing_sensors_12";
+      __overlay__ {
+        mode1 {
+            serdes_pix_clk_hz = "625000000";
+        };
+      };
+    };
+    fragment@13 {
+      target-path = "/i2c@c250000/sensing_sensors_13";
+      __overlay__ {
+        mode1 {
+            serdes_pix_clk_hz = "625000000";
+        };
+      };
+    };
+    fragment@14 {
+      target-path = "/i2c@c250000/sensing_sensors_14";
+      __overlay__ {
+        mode1 {
+            serdes_pix_clk_hz = "625000000";
+        };
+      };
+    };
+    fragment@15 {
+      target-path = "/i2c@c250000/sensing_sensors_15";
+      __overlay__ {
+        mode1 {
+            serdes_pix_clk_hz = "625000000";
+        };
+      };
+    };
+
+};

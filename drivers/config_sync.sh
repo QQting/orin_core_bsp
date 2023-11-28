@@ -293,6 +293,64 @@ else
 	echo LINK D locked
 fi
 
+# SYNC
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0xA0 0x08
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0xAF 0x9F
+
+sleep 0.5
+
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x06 0x83
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x07 0xA7
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x3D 0xA7
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x74 0xA7
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0xAA 0xA7
+
+sleep 0.5
+
+# LINKA
+echo "[sync]: link-a"
+i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD3 0x85
+i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD6 0x85
+#i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x00 0x10 0x21
+sleep 0.5
+i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD3 0x84
+i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD5 0x07
+i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD6 0x84
+i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD8 0x07
+
+# LINKB
+echo "[sync]: link-b"
+i2ctransfer -f -y $I2C_SWITCH w3@$SER1_7B 0x02 0xD3 0x85
+i2ctransfer -f -y $I2C_SWITCH w3@$SER1_7B 0x02 0xD6 0x85
+#i2ctransfer -f -y $I2C_SWITCH w3@$SER1_7B 0x00 0x10 0x21
+sleep 0.5
+i2ctransfer -f -y $I2C_SWITCH w3@$SER1_7B 0x02 0xD3 0x84
+i2ctransfer -f -y $I2C_SWITCH w3@$SER1_7B 0x02 0xD5 0x07
+i2ctransfer -f -y $I2C_SWITCH w3@$SER1_7B 0x02 0xD6 0x84
+i2ctransfer -f -y $I2C_SWITCH w3@$SER1_7B 0x02 0xD8 0x07
+
+# LINKC
+echo "[sync]: link-c"
+i2ctransfer -f -y $I2C_SWITCH w3@$SER2_7B 0x02 0xD3 0x85
+i2ctransfer -f -y $I2C_SWITCH w3@$SER2_7B 0x02 0xD6 0x85
+#i2ctransfer -f -y $I2C_SWITCH w3@$SER2_7B 0x00 0x10 0x21
+sleep 0.5
+i2ctransfer -f -y $I2C_SWITCH w3@$SER2_7B 0x02 0xD3 0x84
+i2ctransfer -f -y $I2C_SWITCH w3@$SER2_7B 0x02 0xD5 0x07
+i2ctransfer -f -y $I2C_SWITCH w3@$SER2_7B 0x02 0xD6 0x84
+i2ctransfer -f -y $I2C_SWITCH w3@$SER2_7B 0x02 0xD8 0x07
+
+# LINKD
+echo "[sync]: link-d"
+i2ctransfer -f -y $I2C_SWITCH w3@$SER3_7B 0x02 0xD3 0x85
+i2ctransfer -f -y $I2C_SWITCH w3@$SER3_7B 0x02 0xD6 0x85
+#i2ctransfer -f -y $I2C_SWITCH w3@$SER3_7B 0x00 0x10 0x21
+sleep 0.5
+i2ctransfer -f -y $I2C_SWITCH w3@$SER3_7B 0x02 0xD3 0x84
+i2ctransfer -f -y $I2C_SWITCH w3@$SER3_7B 0x02 0xD5 0x07
+i2ctransfer -f -y $I2C_SWITCH w3@$SER3_7B 0x02 0xD6 0x84
+i2ctransfer -f -y $I2C_SWITCH w3@$SER3_7B 0x02 0xD8 0x07
+
 echo "[96712-bit6]: Video pipeline locked"
 val=$(i2ctransfer -f -y $I2C_SWITCH w2@$DESER_ADDR 0x01 0x08 r1)
 echo Video pipe: $val
@@ -327,63 +385,6 @@ else
 	echo video pipe 3 locked
 fi
 
-# SYNC
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0xA0 0x08
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0xAF 0x9F
-
-sleep 0.5
-
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x06 0x83
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x07 0xA7
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x3D 0xA7
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x74 0xA7
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0xAA 0xA7
-
-sleep 0.5
-
-# LINKA
-echo "[sensors]: link-a"
-i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD3 0x85
-i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD6 0x85
-#i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x00 0x10 0x21
-sleep 0.5
-i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD3 0x84
-i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD5 0x07
-i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD6 0x84
-i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD8 0x07
-
-# LINKB
-echo "[sensors]: link-b"
-i2ctransfer -f -y $I2C_SWITCH w3@$SER1_7B 0x02 0xD3 0x85
-i2ctransfer -f -y $I2C_SWITCH w3@$SER1_7B 0x02 0xD6 0x85
-#i2ctransfer -f -y $I2C_SWITCH w3@$SER1_7B 0x00 0x10 0x21
-sleep 0.5
-i2ctransfer -f -y $I2C_SWITCH w3@$SER1_7B 0x02 0xD3 0x84
-i2ctransfer -f -y $I2C_SWITCH w3@$SER1_7B 0x02 0xD5 0x07
-i2ctransfer -f -y $I2C_SWITCH w3@$SER1_7B 0x02 0xD6 0x84
-i2ctransfer -f -y $I2C_SWITCH w3@$SER1_7B 0x02 0xD8 0x07
-
-# LINKC
-echo "[sensors]: link-c"
-i2ctransfer -f -y $I2C_SWITCH w3@$SER2_7B 0x02 0xD3 0x85
-i2ctransfer -f -y $I2C_SWITCH w3@$SER2_7B 0x02 0xD6 0x85
-#i2ctransfer -f -y $I2C_SWITCH w3@$SER2_7B 0x00 0x10 0x21
-sleep 0.5
-i2ctransfer -f -y $I2C_SWITCH w3@$SER2_7B 0x02 0xD3 0x84
-i2ctransfer -f -y $I2C_SWITCH w3@$SER2_7B 0x02 0xD5 0x07
-i2ctransfer -f -y $I2C_SWITCH w3@$SER2_7B 0x02 0xD6 0x84
-i2ctransfer -f -y $I2C_SWITCH w3@$SER2_7B 0x02 0xD8 0x07
-
-# LINKD
-echo "[sensors]: link-d"
-i2ctransfer -f -y $I2C_SWITCH w3@$SER3_7B 0x02 0xD3 0x85
-i2ctransfer -f -y $I2C_SWITCH w3@$SER3_7B 0x02 0xD6 0x85
-#i2ctransfer -f -y $I2C_SWITCH w3@$SER3_7B 0x00 0x10 0x21
-sleep 0.5
-i2ctransfer -f -y $I2C_SWITCH w3@$SER3_7B 0x02 0xD3 0x84
-i2ctransfer -f -y $I2C_SWITCH w3@$SER3_7B 0x02 0xD5 0x07
-i2ctransfer -f -y $I2C_SWITCH w3@$SER3_7B 0x02 0xD6 0x84
-i2ctransfer -f -y $I2C_SWITCH w3@$SER3_7B 0x02 0xD8 0x07
 
 # [OX08BC]: 3840, 2160
 # [IMX490]: 2880, 1860
