@@ -1,5 +1,29 @@
 #!/bin/bash
 
+set -e # enable error abort
+
+KERNEL_MODULE=gmsl2_sensors.ko
+
+# install the dependencies
+echo "installing the dependencies..."
+sudo apt install -y build-essential v4l-utils
+
+# build driver
+echo "building driver..."
+make --silent 2> /dev/null
+
+set +e # disable error abort
+
+# load driver
+if [[ ! -f "$KERNEL_MODULE" ]]; then
+	echo "Error! $KERNEL_MODULE not found!"
+	exit 1
+fi
+echo "loading driver..."
+sudo insmod $KERNEL_MODULE 2> /dev/null
+
+
+echo "configuring cameras..."
 # power down all cameras to avoid seralizer(0x40) conflicts
 sudo i2ctransfer -f -y 1 w2@0x28 0x01 0x00
 sudo i2ctransfer -f -y 1 w2@0x29 0x01 0x00
@@ -13,22 +37,30 @@ sudo i2ctransfer -f -y 7 w2@0x29 0x01 0x00
 # 3: sg5-imx490-gmsl2
 
 #deser0
+echo "configuring CAM1..."
 sudo i2ctransfer -f -y 1 w2@0x28 0x01 0x0F # power up cameras
 sleep 0.1
-sudo ./config.sh 2 0x4b 3
+sudo ./config.sh 2 0x4b 1
 
 #deser1
+echo "configuring CAM2..."
 sudo i2ctransfer -f -y 1 w2@0x29 0x01 0x0F # power up cameras
 sleep 0.1
-sudo ./config.sh 2 0x6b 3
+sudo ./config.sh 2 0x6b 1
 
 #deser2
+echo "configuring CAM3..."
 sudo i2ctransfer -f -y 7 w2@0x28 0x01 0x0F # power up cameras
 sleep 0.1
-sudo ./config.sh 7 0x4b 2
+sudo ./config.sh 7 0x4b 1
 
 #deser3
+echo "configuring CAM4..."
 sudo i2ctransfer -f -y 7 w2@0x29 0x01 0x0F # power up cameras
 sleep 0.1
-sudo ./config.sh 7 0x6b 2
+sudo ./config.sh 7 0x6b 1
 
+
+echo "============================="
+echo " All configurations are done!"
+echo "============================="
