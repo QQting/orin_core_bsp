@@ -36,7 +36,7 @@ sudo i2ctransfer -f -y 1 w2@0x29 0x01 0x00
 sudo i2ctransfer -f -y 7 w2@0x28 0x01 0x00
 sudo i2ctransfer -f -y 7 w2@0x29 0x01 0x00
 
-# sudo ./config.sh <I2C_BUS> <DESER_ADDR> <CAM_SEL>
+# sudo ./config_sync.sh <I2C_BUS> <DESER_ADDR> <CAM_SEL>
 # CAM_SEL:
 # 1: sg3-isx031-gmsl2
 # 2: sg8-ox08bc-gmsl2
@@ -46,25 +46,25 @@ sudo i2ctransfer -f -y 7 w2@0x29 0x01 0x00
 echo "configuring CAM1..."
 sudo i2ctransfer -f -y 1 w2@0x28 0x01 0x0F # power up cameras
 sleep 0.1
-sudo ./config.sh 2 0x4b 1
+sudo ./config_sync.sh 2 0x4b 1
 
 #deser1
 echo "configuring CAM2..."
 sudo i2ctransfer -f -y 1 w2@0x29 0x01 0x0F # power up cameras
 sleep 0.1
-sudo ./config.sh 2 0x6b 1
+sudo ./config_sync.sh 2 0x6b 1
 
 #deser2
 echo "configuring CAM3..."
 sudo i2ctransfer -f -y 7 w2@0x28 0x01 0x0F # power up cameras
 sleep 0.1
-sudo ./config.sh 7 0x4b 1
+sudo ./config_sync.sh 7 0x4b 1
 
 #deser3
 echo "configuring CAM4..."
 sudo i2ctransfer -f -y 7 w2@0x29 0x01 0x0F # power up cameras
 sleep 0.1
-sudo ./config.sh 7 0x6b 1
+sudo ./config_sync.sh 7 0x6b 1
 
 
 echo "============================="

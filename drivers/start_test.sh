@@ -12,23 +12,6 @@ echo Test frame count = $STREAM_COUNT
 # gnome-terminal options:
 # --geometry    COLUMNSxROWS+X+Y
 
-# gnome-terminal  --geometry 50x10+0+0 --title=video0 -- bash -c '
-#     date -R
-#     bash -c "v4l2-ctl --set-ctrl bypass_mode=0 --set-fmt-video=width=1920,height=1536 --stream-mmap --stream-count=30 -d /dev/video0"
-#     ret=$?
-#     if [[ $ret -eq 0 ]]; then
-#         date -R
-#         echo ====
-#         echo PASS
-#         echo ====
-#     else
-#         date -R
-#         echo ====
-#         echo FAIL
-#         echo ====
-#     fi
-#     exec bash -i'
-
 echo "video0-3"
 for ((i=0;i<=3;i++)); 
 do

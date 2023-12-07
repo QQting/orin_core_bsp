@@ -30,6 +30,8 @@ This test SOP assumes the 16pcs 3M cameras are already connected to the mini-fak
     ```
 
     The test script will start to test 900 image frames for each camera. Once the video node receives 900 frames, it will show **PASS** in its terminal. Otherwise, it will freeze or show frame dropped.
+    
+    Note: You can modify `STREAM_COUNT=0` in `start_test.sh` to test infinite image frames, it will not stop util you terminate the scripts.
 
 # Advanced Test SOP
 
@@ -126,6 +128,19 @@ v4l2-ctl --set-fmt-video=width=3840,height=2160 --stream-mmap --stream-count=0 -
 
 # example 5M camera on port8 (CAM4 port0)
 v4l2-ctl --set-fmt-video=width=2880,height=1860 --stream-mmap --stream-count=0 -d /dev/video12
+```
+
+## FSYNC Trigger Camera
+
+The cameras supports FSYNC mode to allow external signal to trigger camera.
+To enable FSYNC mode, please use below scripts to configure cameras:
+
+```bash
+# Use config_all_sync.sh to configure 16pcs 3M cameras
+sudo ./config_all_sync.sh
+
+# Or, use config_sync.sh to configure different cameras on different CAM ports
+sudo ./config_sync.sh <I2C_BUS> <DESER_REG> <CAM_SEL>
 ```
 
 ### de-skew
