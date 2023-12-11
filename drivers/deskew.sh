@@ -37,25 +37,17 @@ green_print "i2c_bus=$I2C_SWITCH"
 green_print "de-serializer=$DESER_ADDR"
 echo -----------------------------------
 
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x0B 0x00  # MIPI CSI disable
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF0  # disable all 4 Links in GMSL2 mode
-sleep 0.1
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x08 0xA0 0x04  # default MIPI PHY 2x4 lanes
 
 # start MIPI de-skew before video streaming are received
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x03 0x80
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x04 0x91
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x43 0x80
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x44 0x91
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x83 0x80
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x84 0x91
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xC3 0x80
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xC4 0x91
+ i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x03 0x80
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x04 0xB8
+ i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x43 0x80
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x44 0xB8
+ i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x83 0x80
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x84 0xB8
+ i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xC3 0x80
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xC4 0xB8
 # de-skew done
-
-sleep 0.1
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xFF # Enable all 4 Links in GMSL2 mode
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x18 0x0F # One-shot reset
-sleep 0.1
-
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x0B 0x02 # Enable MIPI CSI
-# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x08 0xA0 0x84 # Force all MIPI clocks running
+ 
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x08 0xA0 0x84 # Force all MIPI clocks running

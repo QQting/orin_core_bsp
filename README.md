@@ -145,18 +145,10 @@ sudo ./config_sync.sh <I2C_BUS> <DESER_REG> <CAM_SEL>
 
 ### de-skew
 
-Sometimes the cameras are not able to start capture frames (especially for 8M cameras).
+Sometimes 8M cameras are not able to automatically start capturing frames due to skew calibration is needed. 
 
-There are two options to solve it:
-
-Option 1: deskew
+To enable skew calibration, please keep the camera stream opened and then run the deskew script:
 
 ```bash
 sudo ./deskew.sh <I2C_BUS> <DESER_REG>
-```
-
-Option 2: reconfigure
-
-```bash
-sudo ./config.sh <I2C_BUS> <DESER_REG> <CAM_SEL>
 ```
