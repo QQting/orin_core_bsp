@@ -97,7 +97,7 @@ sleep 0.1
 
 
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x0B 0x00  # MIPI CSI disable
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF0  # disable all 4 Links in GMSL2 mode
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF0  # bit7:4 GMSL2 mode | bit3:0 disable all 4 Links to avoid DESER i2c conflict
 
 sleep 0.1
 
@@ -114,58 +114,68 @@ fi
 
 sleep 0.1
 
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0xF0 0x62  # LinkB -> Pipe Z -> Pipe 1, LinkA -> Pipe Z -> Pipe 0
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0xF1 0xEA  # LinkD -> Pipe Z -> Pipe 3, LinkC -> Pipe Z -> Pipe 2
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0xF0 0x62  # Pipe 0 -> PHY A -> ST_ID=2  Pipe 1 -> PHY B -> ST_ID=2
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0xF1 0xEA  # Pipe 2 -> PHY C -> ST_ID=2  Pipe 3 -> PHY D -> ST_ID=2
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0xF4 0x0F  # Enable 0 - 3 Pipes
 
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x0B 0x07  # why MAP_SRC_0 MAP_SRC_1 MAP_SRC_2, maybe means 3 fifo ?
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x2D 0x15  # Map CSI to Controller 1 from MAX96712 datasheet
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x0D 0x1E  # YUV422 - 0x1E
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x0E 0x1E  # Map to VC0
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x0F 0x00
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x10 0x00
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x11 0x01
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x12 0x01
+# For Pipe 0, set source and destination VC/DT for 3 data types (YUV422-8bit, FS and FE)
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x0B 0x07  # Enable mapping SRC_0 -> DST_0, SRC_1 -> DST_1, SRC_2 -> DST_2
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x0D 0x1E  # SRC_0 for VC=0 & DT=YUV422-8bit
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x0E 0x1E  # DST_0 for VC=0 & DT=YUV422-8bit
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x0F 0x00  # SRC_1 for VC=0 & DT=Frame Start Code
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x10 0x00  # DST_1 for VC=0 & DT=Frame Start Code
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x11 0x01  # SRC_2 for VC=0 & DT=Frame End Code
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x12 0x01  # DST_2 for VC=0 & DT=Frame End Code
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x2D 0x15  # Map DST_0/1/2 to to MIPI PHY Controller 1 (Port A)
 
+# For Pipe 1, set source and destination VC/DT for 3 data types (YUV422-8bit, FS and FE)
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x4B 0x07
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x6D 0x15
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x4D 0x1E
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x4E 0x5E  # Map to VC1 maybe it's should be equal to ORIN vc-id?
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x4E 0x5E  # DST VC=1
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x4F 0x00
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x50 0x40
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x50 0x40  # DST VC=1
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x51 0x01
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x52 0x41
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x52 0x41  # DST VC=1
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x6D 0x15
 
+# For Pipe 2, set source and destination VC/DT for 3 data types (YUV422-8bit, FS and FE)
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x8B 0x07
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xAD 0x15
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x8D 0x1E
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x8E 0x9E  # Map to VC2
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x8E 0x9E  # DST VC=2
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x8F 0x00
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x90 0x80
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x90 0x80  # DST VC=2
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x91 0x01
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x92 0x81
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x92 0x81  # DST VC=2
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xAD 0x15
 
+# For Pipe 3, set source and destination VC/DT for 3 data types (YUV422-8bit, FS and FE)
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xCB 0x07
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xED 0x15
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xCD 0x1E
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xCE 0xDE  # Map to VC3
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xCE 0xDE  # DST VC=3
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xCF 0x00
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xD0 0xC0
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xD0 0xC0  # DST VC=3
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xD1 0x01
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xD2 0xC1
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xD2 0xC1  # DST VC=3
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xED 0x15
 
 sleep 0.1
 
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x08 0xA0 0x04  # default MIPI PHY 2x4 lanes
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x08 0xA3 0xE4  # PORTA 4 lanes
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x08 0xA4 0xE4  # PORTB 4 lines
 
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x0A 0xC0  # default Four data lanes
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x4A 0xC0
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x8A 0xC0
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xCA 0xC0
+# # Here we use both Port A and Port B
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x08 0xA2 0xF0  # Eable MIPI PHY 0/1/2/3 (Port A and Port B)
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x08 0xA3 0xE4  # Map PHY 0/1 (Port A) to data lane 0/1/2/3
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x08 0xA4 0xE4  # Map PHY 2/3 (Port B) to data lane 0/1/2/3
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x0A 0xC0  # default 4 data lane cnt for PHY 0
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x4A 0xC0  # default 4 data lane cnt for PHY 1
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x8A 0xC0  # default 4 data lane cnt for PHY 2
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0xCA 0xC0  # default 4 data lane cnt for PHY 3
 
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x08 0xA2 0xF0  # Eable all MIPI PHYS
+# Below we use Port A only
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x08 0xA2 0x30  # Eable MIPI PHY 0/1 (Port A only)
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x08 0xA3 0xE4  # Map PHY 0/1 (Port A) to data lane 0/1/2/3
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x0A 0xC0  # default 4 data lane cnt for PHY 0
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x4A 0xC0  # default 4 data lane cnt for PHY 1
 
 # DPHY[connect with orin]
 if [ ${camera_array[key]} == sg3-isx031-gmsl2 ]; then
@@ -196,7 +206,7 @@ sleep 0.1
 
 # 9295-A/96717-A
 echo "[sensors]: serializer-a"
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF1 # Enable LinkA
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF1 # Enable only Link A to avoid DESER i2c conflict from Link B/C/D
 
 sleep 0.2
 
@@ -224,7 +234,7 @@ i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x00 0x00 $SER0_8B
 
 # 9295-B/96717-B
 echo "[sensors]: serializer-b"
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF2 # Enable LinkB
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF2 # Enable only Link B to avoid DESER i2c conflict from Link A/C/D
 
 sleep 0.2
 
@@ -252,7 +262,7 @@ i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x00 0x00 $SER1_8B
 
 # 9295-C/96717-C
 echo "[sensors]: serializer-c"
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF4 # Enable LinkC
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF4 # Enable only Link C to avoid DESER i2c conflict from Link A/B/D
 
 sleep 0.2
 
@@ -280,7 +290,7 @@ i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x00 0x00 $SER2_8B
 
 # 9295-D/96717-D
 echo "[sensors]: serializer-d"
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF8 # Enable LinkD
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF8 # Enable only Link D to avoid DESER i2c conflict from Link A/B/C
 
 sleep 0.2
 
