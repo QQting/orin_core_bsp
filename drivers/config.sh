@@ -191,16 +191,16 @@ if [ ${camera_array[key]} == sg3-isx031-gmsl2 ]; then
     # i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1E 0x37
     # green_print "MIPI Speed 2.3Gbps"
 else
-    # i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x15 0x37
-    # i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x18 0x37
-    # i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1B 0x37
-    # i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1E 0x37
-    # green_print "MIPI Speed 2.3Gbps"
-   i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x15 0x38
-   i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x18 0x38
-   i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1B 0x38
-   i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1E 0x38
-   green_print "MIPI Speed 2.4Gbps"
+    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x15 0x37
+    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x18 0x37
+    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1B 0x37
+    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1E 0x37
+    green_print "MIPI Speed 2.3Gbps"
+    # i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x15 0x38
+    # i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x18 0x38
+    # i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1B 0x38
+    # i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1E 0x38
+    # green_print "MIPI Speed 2.4Gbps"
 
 fi
 
