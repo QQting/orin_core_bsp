@@ -97,7 +97,7 @@ sleep 0.1
 
 
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x0B 0x00  # MIPI CSI disable
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF0  # bit7:4 GMSL2 mode | bit3:0 disable all 4 Links to avoid DESER i2c conflict
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF0  # disable all 4 Links in GMSL2 mode
 
 sleep 0.1
 
@@ -114,8 +114,8 @@ fi
 
 sleep 0.1
 
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0xF0 0x62  # Pipe 0 -> PHY A -> ST_ID=2  Pipe 1 -> PHY B -> ST_ID=2
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0xF1 0xEA  # Pipe 2 -> PHY C -> ST_ID=2  Pipe 3 -> PHY D -> ST_ID=2
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0xF0 0x62  # Enable Pipe 0/1 for Link A/B stream ID 2 (ST_ID=2 also means SER's Pipe Z)
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0xF1 0xEA  # Enable Pipe 2/3 for Link C/D stream ID 2
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0xF4 0x0F  # Enable 0 - 3 Pipes
 
 # For Pipe 0, set source and destination VC/DT for 3 data types (YUV422-8bit, FS and FE)
@@ -177,6 +177,7 @@ i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x08 0xA3 0xE4  # Map PHY 0/1 (Port
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x0A 0xC0  # default 4 data lane cnt for PHY 0
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x4A 0xC0  # default 4 data lane cnt for PHY 1
 
+
 # DPHY[connect with orin]
 if [ ${camera_array[key]} == sg3-isx031-gmsl2 ]; then
     i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x15 0x35
@@ -190,29 +191,30 @@ if [ ${camera_array[key]} == sg3-isx031-gmsl2 ]; then
     # i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1E 0x37
     # green_print "MIPI Speed 2.3Gbps"
 else
-    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x15 0x37
-    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x18 0x37
-    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1B 0x37
-    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1E 0x37
-    green_print "MIPI Speed 2.3Gbps"
-#   i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x15 0x39
-#   i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x18 0x39
-#   i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1B 0x39
-#   i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1E 0x39
-#   green_print "MIPI Speed 2.5Gbps"
+    # i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x15 0x37
+    # i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x18 0x37
+    # i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1B 0x37
+    # i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1E 0x37
+    # green_print "MIPI Speed 2.3Gbps"
+   i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x15 0x38
+   i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x18 0x38
+   i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1B 0x38
+   i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x1E 0x38
+   green_print "MIPI Speed 2.4Gbps"
+
 fi
 
 sleep 0.1
 
 # 9295-A/96717-A
 echo "[sensors]: serializer-a"
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF1 # Enable only Link A to avoid DESER i2c conflict from Link B/C/D
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF1 # Enable only LinkA
 
 sleep 0.2
 
 i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xBE 0x10
 sleep 1
-i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x03 0x18 0x5E
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x03 0x18 0x5E # enable(=bit6) datatype 0x1E to route to video pipe Z
 
 if [ ${camera_array[key]} == sg5-imx490-gmsl2 ]; then
     i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x02 0xD6 0x10
@@ -234,7 +236,7 @@ i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x00 0x00 $SER0_8B
 
 # 9295-B/96717-B
 echo "[sensors]: serializer-b"
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF2 # Enable only Link B to avoid DESER i2c conflict from Link A/C/D
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF2 # Enable only LinkB
 
 sleep 0.2
 
@@ -262,7 +264,7 @@ i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x00 0x00 $SER1_8B
 
 # 9295-C/96717-C
 echo "[sensors]: serializer-c"
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF4 # Enable only Link C to avoid DESER i2c conflict from Link A/B/D
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF4 # Enable only LinkC
 
 sleep 0.2
 
@@ -290,7 +292,7 @@ i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x00 0x00 $SER2_8B
 
 # 9295-D/96717-D
 echo "[sensors]: serializer-d"
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF8 # Enable only Link D to avoid DESER i2c conflict from Link A/B/C
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x06 0xF8 # Enable only LinkD
 
 sleep 0.2
 
