@@ -29,7 +29,7 @@ static const struct camera_common_frmfmt gmsl2_sensor_frmfmt[] = {
 };
 
 static const struct of_device_id gmsl2_sensor_of_match[] = {
-	{ .compatible = "sensing,gmsl2_sensor",},
+	{ .compatible = "adlink,gmsl2_sensor",},
 	{ },
 };
 MODULE_DEVICE_TABLE(of, gmsl2_sensor_of_match);

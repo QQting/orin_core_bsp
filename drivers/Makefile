@@ -1,9 +1,10 @@
 PWD ?= $(shell pwd)
 BUILD_DIR ?= $(shell pwd)
 ARCH ?= arm64
-obj-m := gmsl2_sensors.o
 KERNEL_SRC_DIR  ?= /lib/modules/$(shell uname -r)/build
-DTS_FILE ?= new-overlay
+DTS_FILE ?= sensing-camera-overlay-max9296
+
+obj-m := gmsl2_sensors.o
 
 .PHONY: all
 all: clean modules
