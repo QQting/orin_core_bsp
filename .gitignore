@@ -1,0 +1,14 @@
+drivers/.gmsl2_sensors.ko.cmd
+drivers/.gmsl2_sensors.mod.cmd
+drivers/.gmsl2_sensors.mod.o.cmd
+drivers/.gmsl2_sensors.o.cmd
+drivers/.Module.symvers.cmd
+drivers/.modules.order.cmd
+drivers/gmsl2_sensors.ko
+drivers/gmsl2_sensors.mod
+drivers/gmsl2_sensors.mod.c
+drivers/gmsl2_sensors.mod.o
+drivers/gmsl2_sensors.o
+drivers/Module.symvers
+drivers/modules.order
+drivers/new-overlay.dtbo
