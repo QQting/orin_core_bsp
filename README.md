@@ -42,6 +42,13 @@ cd orin_core_bsp/drivers
 sudo ./install_driver.sh
 ```
 
+Otherwise, if you want to stop loading driver automatically, please run below command:
+
+```bash
+cd orin_core_bsp/drivers
+sudo ./remove_driver.sh
+```
+
 # Advanced Test SOP
 
 Below test SOP is for engineers who may test different cameras on the specific CAM port.
