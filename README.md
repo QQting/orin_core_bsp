@@ -33,6 +33,15 @@ This test SOP assumes the 16pcs 3M cameras are already connected to the mini-fak
     
     Note: You can modify `STREAM_COUNT=0` in `start_test.sh` to test infinite image frames, it will not stop util you terminate the scripts.
 
+# Automatically Load Driver
+
+Run below command once to build camera driver and automatically load driver at bootup.
+
+```bash
+cd orin_core_bsp/drivers
+sudo ./install_driver.sh
+```
+
 # Advanced Test SOP
 
 Below test SOP is for engineers who may test different cameras on the specific CAM port.
