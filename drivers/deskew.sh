@@ -7,8 +7,8 @@
 #
 # 1st max96712 -> i2c_bus=2, deser_addr=0x4b
 # 2nd max96712 -> i2c_bus=2, deser_addr=0x6b
-# 4th max96712 -> i2c_bus=7, deser_addr=0x4b
-# 3rd max96712 -> i2c_bus=7, deser_addr=0x6b
+# 3rd max96712 -> i2c_bus=7, deser_addr=0x4b
+# 4th max96712 -> i2c_bus=7, deser_addr=0x6b
 #
 
 echo arg1=$1
