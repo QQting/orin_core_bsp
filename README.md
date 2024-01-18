@@ -168,3 +168,28 @@ To enable skew calibration, please keep the camera stream opened and then run th
 ```bash
 sudo ./deskew.sh <I2C_BUS> <DESER_REG>
 ```
+
+# Camera FPS Test Tool
+
+Before testing, you have to install the driver first.
+
+```bash
+cd orin_core_bsp/drivers
+sudo ./install_driver.sh
+```
+
+After driver is installed, you can start the test script:
+
+
+```bash
+cd orin_core_bsp/tools
+./camera_fps_test.sh
+```
+
+After entering the sudo password, it will start to configuring the cameras, streaming, and then analyzing the logs.
+
+If you want to change the default configurations, please modify `camera_fps_test.sh`
+
+- **STREAM_COUNT** - How many image frames you want to test.
+- **DELTA_TOLERANCE** - The acceptable variation of timestamp between two image frames.
+- **VIDEO_X=Y** - X is the index of video node; Y is the camera resolution (3/5/8 MP; 0 for not connected)
