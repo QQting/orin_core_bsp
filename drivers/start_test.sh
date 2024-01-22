@@ -32,23 +32,23 @@ done
 # echo "enter any key to continue..."
 # read key
 
-echo "video4-7"
-for ((i=4;i<=7;i++)); 
-do
-    X=500
-    Y=$((260*($i-4)))
-    gnome-terminal  --geometry 50x10+$X+$Y --title=video$i -- bash -c '
-        date -R
-        bash -c "v4l2-ctl --set-ctrl bypass_mode=0 --set-fmt-video=width=1920,height=1536 --stream-mmap --stream-count='$STREAM_COUNT' -d /dev/video'$i'"
-        ret=$?
-        if [[ $ret -eq 0 ]]; then
-            date -R
-            echo ====
-            echo PASS
-            echo ====
-        fi
-        exec bash -i'
-done
+#echo "video4-7"
+#for ((i=4;i<=7;i++)); 
+#do
+#    X=500
+#    Y=$((260*($i-4)))
+#    gnome-terminal  --geometry 50x10+$X+$Y --title=video$i -- bash -c '
+#        date -R
+#        bash -c "v4l2-ctl --set-ctrl bypass_mode=0 --set-fmt-video=width=1920,height=1536 --stream-mmap --stream-count='$STREAM_COUNT' -d /dev/video'$i'"
+#        ret=$?
+#        if [[ $ret -eq 0 ]]; then
+#            date -R
+#            echo ====
+#            echo PASS
+#            echo ====
+#        fi
+#        exec bash -i'
+#done
 # echo "enter any key to continue..."
 # read key
 
