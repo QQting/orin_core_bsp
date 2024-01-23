@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # Pre-configure stream count
-STREAM_COUNT=1980  # 1min=1*60*33
-# STREAM_COUNT=118800  # 1hr=60*60*33
-# STREAM_COUNT=1188000  # 10hr=10*60*60*33
+STREAM_COUNT=1800  # 1min=1*60*30
+# STREAM_COUNT=108000  # 1hr=60*60*30
+# STREAM_COUNT=1080000  # 10hr=10*60*60*30
+#STREAM_COUNT=1296000  # 12hr
 
 # Pre-configure the delta tolerance, default 0.02 means 33.33-0.02 <= delta <= 33.33+0.02
 DELTA_TOLERANCE=0.02
@@ -35,8 +36,10 @@ do
     fi
 done
 
-# early prompt entering password for sudo
-sudo ls > /dev/null
+if [[ ! $EUID -eq 0 ]]; then
+        echo "Please use 'sudo' to run this script."
+    exit 1
+fi
 
 # start configuring cameras for each DESER
 echo "Start configuring cameras..."
@@ -101,7 +104,7 @@ else
     [ ! $VIDEO_15 -eq 0 ] && ./v4l2_stream.sh 15 $VIDEO_15 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"15 > /dev/null 2>&1 &
 fi
 
-sleep_time=$((STREAM_COUNT/33))
+sleep_time=$((STREAM_COUNT/30))
 for (( i=1; i<=$sleep_time; i++ ))
 do
     echo $i/$sleep_time seconds
