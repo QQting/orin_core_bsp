@@ -40,3 +40,7 @@ sudo cp -a $KO_FILE $LIB_MODULE_PATH
 sudo depmod -a
 echo "Kernel modules have been installed"
 
+echo "loading camera driver now..."
+sudo insmod $LIB_MODULE_PATH/$KO_FILE
+
+echo "done"
