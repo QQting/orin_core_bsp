@@ -7,6 +7,17 @@ MODULE_CONF=gmsl2_sensors.conf
 KO_FILE=gmsl2_sensors.ko
 LIB_MODULE_PATH=/lib/modules/$(uname -r)/extra
 
+if [[ `id -u` -ne 0 ]]; then
+        echo ""
+        echo "Please run as root(sudo command needed)"
+        echo ""
+        exit 1
+fi
+
+# install the camera driver header
+echo "installing the camera driver headers..."
+sudo ./AU-SPR_cam_header.sh
+
 # install the dependencies
 echo "checking the dependencies..."
 REQUIRED_PKG="v4l-utils"
