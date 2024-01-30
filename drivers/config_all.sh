@@ -32,7 +32,7 @@ sudo insmod $KERNEL_MODULE 2> /dev/null
 echo "configuring cameras..."
 # power down all cameras to avoid seralizer(0x40) conflicts
 sudo i2ctransfer -f -y 1 w2@0x28 0x01 0x00
-sudo i2ctransfer -f -y 1 w2@0x29 0x01 0x00
+#sudo i2ctransfer -f -y 1 w2@0x29 0x01 0x00
 sudo i2ctransfer -f -y 7 w2@0x28 0x01 0x00
 sudo i2ctransfer -f -y 7 w2@0x29 0x01 0x00
 
@@ -49,10 +49,10 @@ sleep 0.1
 sudo ./config.sh 2 0x4b 1
 
 #deser1
-echo "configuring CAM2..."
-sudo i2ctransfer -f -y 1 w2@0x29 0x01 0x0F # power up cameras
-sleep 0.1
-sudo ./config.sh 2 0x6b 1
+#echo "configuring CAM2..."
+#sudo i2ctransfer -f -y 1 w2@0x29 0x01 0x0F # power up cameras
+#sleep 0.1
+#sudo ./config.sh 2 0x6b 1
 
 #deser2
 echo "configuring CAM3..."
