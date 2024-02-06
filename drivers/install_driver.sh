@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# enable error abort
-set -e
-
 MODULE_CONF=gmsl2_sensors.conf
 KO_FILE=gmsl2_sensors.ko
 LIB_MODULE_PATH=/lib/modules/$(uname -r)/extra
@@ -20,6 +17,7 @@ sudo ./AU-SPR_cam_header.sh
 
 # install the dependencies
 echo "checking the dependencies..."
+sudo apt update
 REQUIRED_PKG="v4l-utils"
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' $REQUIRED_PKG|grep "install ok installed")
 echo Checking for $REQUIRED_PKG: $PKG_OK
