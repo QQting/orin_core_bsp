@@ -38,6 +38,7 @@ green_print "de-serializer=$DESER_ADDR"
 echo -----------------------------------
 
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x08 0xA0 0x04  # default MIPI PHY 2x4 lanes
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x18 0x0F # One-shot reset
 
 # start MIPI de-skew before video streaming are received
  i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x09 0x03 0x80
