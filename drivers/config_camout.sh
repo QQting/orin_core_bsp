@@ -296,8 +296,8 @@ i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0xAD 0x15 # Map DST_0/1/2 to t
 # i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0xED 0x15 # Map DST_0/1/2 to to MIPI PHY Controller 1 (Port A)
 
 # DES's Port A settings
-# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x20 0x2F # DPHY 1.5 Gbps
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x20 0x37 # DPHY 2.3 Gbps for 8MP camera
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x20 0x2F # DPHY 1.5 Gbps
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x20 0x37 # DPHY 2.3 Gbps for 8MP camera
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x4A 0xC0 # 4 lanes for Port A
 
 # Don't care DES's Port B because it is not conencted to MIPI
