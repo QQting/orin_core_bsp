@@ -1,5 +1,11 @@
 #!/bin/bash
 
+MIPI_2500MHZ_FLAG=0
+if [[ $1 == "2.5g" || $1 == "2.5G" ]];
+then
+        MIPI_2500MHZ_FLAG=1
+fi
+
 MODULE_CONF=gmsl2_sensors.conf
 KO_FILE=gmsl2_sensors.ko
 LIB_MODULE_PATH=/lib/modules/$(uname -r)/extra
@@ -28,7 +34,12 @@ fi
 
 # build driver
 echo "building driver..."
-make --silent 2> /dev/null
+if [[ $MIPI_2500MHZ_FLAG == 1 ]];
+then
+        make clean modules dtbo_2500 --silent 2> /dev/null
+else
+        make --silent 2> /dev/null
+fi
 
 # copy kernel modules config
 sudo cp -a $MODULE_CONF /etc/modules-load.d/
@@ -38,7 +49,10 @@ sudo cp -a $KO_FILE $LIB_MODULE_PATH
 sudo depmod -a
 echo "Kernel modules have been installed"
 
-echo "loading camera driver now..."
-sudo insmod $LIB_MODULE_PATH/$KO_FILE
+# echo "loading camera driver now..."
+# sudo insmod $LIB_MODULE_PATH/$KO_FILE
 
-echo "done"
+sync
+echo "======================================"
+echo " Please reboot to load the new driver "
+echo "======================================"

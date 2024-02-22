@@ -17,6 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef MIPI_LANE_SPEED
+  #define MIPI_LANE_SPEED	2100 // 2.1 Gbps
+#endif
  
 / {
     overlay-name = "New GMSL2 Camera Device Tree Overlay";
@@ -28,13 +31,25 @@
       target-path = "/i2c@3180000/sensing_sensors_0";
       __overlay__ {
         mode0 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode1 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode2 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
       };
     };
@@ -42,13 +57,25 @@
       target-path = "/i2c@3180000/sensing_sensors_1";
       __overlay__ {
         mode0 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode1 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode2 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
       };
     };
@@ -56,13 +83,25 @@
       target-path = "/i2c@3180000/sensing_sensors_2";
       __overlay__ {
         mode0 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode1 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode2 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
       };
     };
@@ -70,13 +109,25 @@
       target-path = "/i2c@3180000/sensing_sensors_3";
       __overlay__ {
         mode0 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode1 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode2 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
       };
     };
@@ -84,13 +135,25 @@
       target-path = "/i2c@3180000/sensing_sensors_4";
       __overlay__ {
         mode0 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode1 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode2 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
       };
     };
@@ -98,13 +161,25 @@
       target-path = "/i2c@3180000/sensing_sensors_5";
       __overlay__ {
         mode0 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode1 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode2 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
       };
     };
@@ -112,13 +187,25 @@
       target-path = "/i2c@3180000/sensing_sensors_6";
       __overlay__ {
         mode0 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode1 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode2 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
       };
     };
@@ -126,13 +213,25 @@
       target-path = "/i2c@3180000/sensing_sensors_7";
       __overlay__ {
         mode0 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode1 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode2 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
       };
     };
@@ -140,13 +239,25 @@
       target-path = "/i2c@c250000/sensing_sensors_8";
       __overlay__ {
         mode0 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode1 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode2 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
       };
     };
@@ -154,13 +265,25 @@
       target-path = "/i2c@c250000/sensing_sensors_9";
       __overlay__ {
         mode0 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode1 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode2 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
       };
     };
@@ -168,13 +291,25 @@
       target-path = "/i2c@c250000/sensing_sensors_10";
       __overlay__ {
         mode0 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode1 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode2 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
       };
     };
@@ -182,13 +317,25 @@
       target-path = "/i2c@c250000/sensing_sensors_11";
       __overlay__ {
         mode0 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode1 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode2 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
       };
     };
@@ -196,13 +343,25 @@
       target-path = "/i2c@c250000/sensing_sensors_12";
       __overlay__ {
         mode0 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode1 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode2 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
       };
     };
@@ -210,13 +369,25 @@
       target-path = "/i2c@c250000/sensing_sensors_13";
       __overlay__ {
         mode0 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode1 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode2 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
       };
     };
@@ -224,13 +395,25 @@
       target-path = "/i2c@c250000/sensing_sensors_14";
       __overlay__ {
         mode0 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode1 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode2 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
       };
     };
@@ -238,13 +421,25 @@
       target-path = "/i2c@c250000/sensing_sensors_15";
       __overlay__ {
         mode0 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode1 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
         mode2 {
-            serdes_pix_clk_hz = "625000000";
+#if (MIPI_LANE_SPEED==2100)
+            serdes_pix_clk_hz = "525000000";
+#else
+            serdes_pix_clk_hz = "625000000" ;
+#endif
         };
       };
     };

@@ -33,9 +33,9 @@ sudo ./deskew.sh 2 0x4b
 # echo "enter any key to continue..."
 # read key
 
-#echo "video4-5"
-#for ((i=4;i<=5;i++)); 
-#do
+# echo "video4-5"
+# for ((i=4;i<=5;i++)); 
+# do
 #    X=500
 #    Y=$((260*($i-4)))
 #    gnome-terminal  --geometry 50x10+$X+$Y --title=video$i -- bash -c '
@@ -49,8 +49,8 @@ sudo ./deskew.sh 2 0x4b
 #            echo ====
 #        fi
 #        exec bash -i'
-#done
-sudo ./deskew.sh 2 0x6b
+# done
+# sudo ./deskew.sh 2 0x6b
 # echo "enter any key to continue..."
 # read key
 

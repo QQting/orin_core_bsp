@@ -55,12 +55,6 @@ else
     sudo ./new_config.sh 7 0x6b $VIDEO_12$VIDEO_13$VIDEO_14$VIDEO_15 > /dev/null 2>&1
 fi
 
-# deskew
-sudo ./deskew.sh 2 0x4b > /dev/null 2>&1
-sudo ./deskew.sh 2 0x6b > /dev/null 2>&1
-sudo ./deskew.sh 7 0x4b > /dev/null 2>&1
-sudo ./deskew.sh 7 0x6b > /dev/null 2>&1
-
 # start streaming video0 - video15
 mkdir -p logs
 TS=$(date +"%Y%m%d%H%M%S")
@@ -103,6 +97,13 @@ else
     [ ! $VIDEO_14 -eq 0 ] && ./v4l2_stream.sh 14 $VIDEO_14 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"14 > /dev/null 2>&1 &
     [ ! $VIDEO_15 -eq 0 ] && ./v4l2_stream.sh 15 $VIDEO_15 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"15 > /dev/null 2>&1 &
 fi
+
+# deskew
+sleep 0.5
+sudo ./deskew.sh 2 0x4b > /dev/null 2>&1
+sudo ./deskew.sh 2 0x6b > /dev/null 2>&1
+sudo ./deskew.sh 7 0x4b > /dev/null 2>&1
+sudo ./deskew.sh 7 0x6b > /dev/null 2>&1
 
 sleep_time=$((STREAM_COUNT/30))
 for (( i=1; i<=$sleep_time; i++ ))
