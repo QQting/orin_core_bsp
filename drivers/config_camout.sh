@@ -78,11 +78,8 @@ echo key=$key
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x10 0x80 # RESET_ALL
 sleep 0.1
 
-if [ ${camera_array[key]} == sg3-isx031-gmsl2 ]; then
-    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x01 0x01 # MAX96717F use 3Gbps
-else
-    i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x01 0x02 # MAX9295 use 6Gbps
-fi
+# configure remote MAX9295
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x01 0x02 # MAX9295 use 6Gbps
 sleep 0.1
 
 # Enable DES Link A to configure SER-A
