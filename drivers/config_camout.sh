@@ -104,43 +104,32 @@ i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x02 0xBE 0x10 # GPIO_OUT=1
 sleep 1
 
 # Set SER-A's output ST_ID
-# i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x00 0x5B 0x00 # Set ST_ID=0 (stream id)
-i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x00 0x5B 0x02 # Set ST_ID=2 (stream id)
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x00 0x5B 0x00 # Set ST_ID=0 (stream id)
 
-if [ ${camera_array[key]} == sg3-isx031-gmsl2 ]; then
-    # Note: Here we can only select Pipe Z due to MAX96717F (sg3-isx031-gmsl2) only has Pipe Z
-    i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x00 0x02 0x43 # enable Pipe Z
-    i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x08 0x64 # Enable line info(=bit6) and Pipe Z -> Port B
-    i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x11 0x40 # Start SER's Port B pipe Z
-    i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x18 0x5E # enable(=bit6) datatype 0x1E to route to video pipe Z
-else
-    # Note: Here we can select any pipes
-    
-    # SER's X/Y/Z/U channel selection
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x00 0x02 0x13 # enable Pipe X
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x00 0x02 0x23 # enable Pipe Y
-    i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x00 0x02 0x43 # enable Pipe Z
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x00 0x02 0x83 # enable Pipe U
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x00 0x02 0x53 # enable Pipe X/Z
-    
-    # clock selection
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x08 0x61 # Enable line info(=bit6) and Pipe X -> Port B
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x08 0x62 # Enable line info(=bit6) and Pipe Y -> Port B
-    i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x08 0x64 # Enable line info(=bit6) and Pipe Z -> Port B
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x08 0x68 # Enable line info(=bit6) and Pipe U -> Port B
-    
-    # data selection
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x11 0x10 # Start SER's Port B pipe X
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x11 0x20 # Start SER's Port B pipe Y
-    i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x11 0x40 # Start SER's Port B pipe Z
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x11 0x80 # Start SER's Port B pipe U
-    
-    # SER route datatype
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x14 0x5E # enable(=bit6) datatype 0x1E to route to video pipe X
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x16 0x5E # enable(=bit6) datatype 0x1E to route to video pipe Y
-    i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x18 0x5E # enable(=bit6) datatype 0x1E to route to video pipe Z
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x1A 0x5E # enable(=bit6) datatype 0x1E to route to video pipe U
-fi
+# SER's X/Y/Z/U channel selection
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x00 0x02 0x13 # enable Pipe X
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x00 0x02 0x23 # enable Pipe Y
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x00 0x02 0x43 # enable Pipe Z
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x00 0x02 0x83 # enable Pipe U
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x00 0x02 0x53 # enable Pipe X/Z
+
+# clock selection
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x08 0x61 # Enable line info(=bit6) and Pipe X -> Port B
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x08 0x62 # Enable line info(=bit6) and Pipe Y -> Port B
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x08 0x64 # Enable line info(=bit6) and Pipe Z -> Port B
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x08 0x68 # Enable line info(=bit6) and Pipe U -> Port B
+
+# data selection
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x11 0x10 # Start SER's Port B pipe X
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x11 0x20 # Start SER's Port B pipe Y
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x11 0x40 # Start SER's Port B pipe Z
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x11 0x80 # Start SER's Port B pipe U
+
+# SER route datatype
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x14 0x5E # enable(=bit6) datatype 0x1E to route to video pipe X
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x16 0x5E # enable(=bit6) datatype 0x1E to route to video pipe Y
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x18 0x5E # enable(=bit6) datatype 0x1E to route to video pipe Z
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x03 0x1A 0x5E # enable(=bit6) datatype 0x1E to route to video pipe U
 
 if [ ${camera_array[key]} == sg3-isx031-gmsl2 ]; then
     i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x02 0xD3 0x10
@@ -150,9 +139,6 @@ if [ ${camera_array[key]} == sg5-imx490-gmsl2 ]; then
     i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x02 0xD3 0x00
     i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x02 0xD6 0x00
 fi
-
-# # Disable SER control channel to avoid i2c communication error
-# i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x04 0x04 0x80 # 
 
 # Enable DES Link B to configure SER-B
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x10 0x02 # Enable Link B only
@@ -178,39 +164,29 @@ sleep 1
 # Set SER-B's output ST_ID
 i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x00 0x5B 0x01 # Set ST_ID=1 (stream id)
 
-if [ ${camera_array[key]} == sg3-isx031-gmsl2 ]; then
-    # Note: Here we can only select Pipe Z due to MAX96717F (sg3-isx031-gmsl2) only has Pipe Z
-    i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x00 0x02 0x43 # enable Pipe Z
-    i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x08 0x64 # Enable line info(=bit6) and Pipe Z -> Port B
-    i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x11 0x40 # Start SER's Port B pipe Z
-    i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x18 0x5E # enable(=bit6) datatype 0x1E to route to video pipe Z
-else
-    # Note: Here we can select any pipes
+# SER's X/Y/Z/U channel selection
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x00 0x02 0x13 # Enable SER's Pipe X
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x00 0x02 0x23 # Enable SER's Pipe Y
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x00 0x02 0x43 # Enable SER's Pipe Z
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x00 0x02 0x83 # Enable SER's Pipe U
 
-    # SER's X/Y/Z/U channel selection
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x00 0x02 0x13 # Enable SER's Pipe X
-    i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x00 0x02 0x23 # Enable SER's Pipe Y
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x00 0x02 0x43 # Enable SER's Pipe Z
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x00 0x02 0x83 # Enable SER's Pipe U
-    
-    # clock selection
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x08 0x61 # Enable line info(=bit6) and Pipe X -> Port B
-    i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x08 0x62 # Enable line info(=bit6) and Pipe Y -> Port B
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x08 0x64 # Enable line info(=bit6) and Pipe Z -> Port B
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x08 0x68 # Enable line info(=bit6) and Pipe U -> Port B
-    
-    # data selection
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x11 0x10 # Start SER Port B's pipe X
-    i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x11 0x20 # Start SER Port B's pipe Y
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x11 0x40 # Start SER Port B's pipe Z
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x11 0x80 # Start SER Port B's pipe U
-    
-    # SER route datatype
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x14 0x5E # enable(=bit6) datatype 0x1E to route to video pipe X
-    i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x16 0x5E # enable(=bit6) datatype 0x1E to route to video pipe Y
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x18 0x5E # enable(=bit6) datatype 0x1E to route to video pipe Z
-    # i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x1A 0x5E # enable(=bit6) datatype 0x1E to route to video pipe U
-fi
+# clock selection
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x08 0x61 # Enable line info(=bit6) and Pipe X -> Port B
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x08 0x62 # Enable line info(=bit6) and Pipe Y -> Port B
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x08 0x64 # Enable line info(=bit6) and Pipe Z -> Port B
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x08 0x68 # Enable line info(=bit6) and Pipe U -> Port B
+
+# data selection
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x11 0x10 # Start SER Port B's pipe X
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x11 0x20 # Start SER Port B's pipe Y
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x11 0x40 # Start SER Port B's pipe Z
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x11 0x80 # Start SER Port B's pipe U
+
+# SER route datatype
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x14 0x5E # enable(=bit6) datatype 0x1E to route to video pipe X
+i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x16 0x5E # enable(=bit6) datatype 0x1E to route to video pipe Y
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x18 0x5E # enable(=bit6) datatype 0x1E to route to video pipe Z
+# i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x03 0x1A 0x5E # enable(=bit6) datatype 0x1E to route to video pipe U
 
 if [ ${camera_array[key]} == sg3-isx031-gmsl2 ]; then
     i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x02 0xD6 0x10
@@ -252,15 +228,15 @@ i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x30 0x04 # CSI 2x4 mode
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x33 0x4E # PHY0 D0->D2 D1->D3, PHY1 D0->D0 D1->D1
 
 # For Pipe X DST VC=0
-# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x50 0x00 # Control ST_ID=0 from SER to DES's Pipe X
-# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x0B 0x07 # Enable mapping SRC_0/1/2 -> DST_0/1/2
-# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x0D 0x1E # SRC_0 for VC=0 & DT=YUV422-8bit
-# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x0E 0x1E # DST_0 for VC=0 & DT=YUV422-8bit
-# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x0F 0x00 # SRC_1 for VC=0 & DT=Frame Start Code
-# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x10 0x00 # DST_1 for VC=0 & DT=Frame Start Code
-# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x11 0x01 # SRC_2 for VC=0 & DT=Frame End Code
-# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x12 0x01 # DST_2 for VC=0 & DT=Frame End Code
-# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x2D 0x15 # Map DST_0/1/2 to to MIPI PHY Controller 1 (Port A)
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x50 0x00 # Control ST_ID=0 from SER to DES's Pipe X
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x0B 0x07 # Enable mapping SRC_0/1/2 -> DST_0/1/2
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x0D 0x1E # SRC_0 for VC=0 & DT=YUV422-8bit
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x0E 0x1E # DST_0 for VC=0 & DT=YUV422-8bit
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x0F 0x00 # SRC_1 for VC=0 & DT=Frame Start Code
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x10 0x00 # DST_1 for VC=0 & DT=Frame Start Code
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x11 0x01 # SRC_2 for VC=0 & DT=Frame End Code
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x12 0x01 # DST_2 for VC=0 & DT=Frame End Code
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x2D 0x15 # Map DST_0/1/2 to to MIPI PHY Controller 1 (Port A)
 
 # For Pipe Y DST VC=1
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x51 0x01 # Control ST_ID=1 from SER to DES's Pipe Y
@@ -274,15 +250,15 @@ i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x52 0x41 # DST_2 for VC=1 & D
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x6D 0x15 # Map DST_0/1/2 to to MIPI PHY Controller 1 (Port A)
 
 # For Pipe Z DST VC=0
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x52 0x02 # Control ST_ID=2 from SER to DES's Pipe Z
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x8B 0x07 # Enable mapping SRC_0/1/2 -> DST_0/1/2
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x8D 0x1E # SRC_0 for VC=0 & DT=YUV422-8bit
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x8E 0x1E # DST_0 for VC=0 & DT=YUV422-8bit
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x8F 0x00 # SRC_1 for VC=0 & DT=Frame Start Code
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x90 0x00 # DST_1 for VC=0 & DT=Frame Start Code
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x91 0x01 # SRC_2 for VC=0 & DT=Frame End Code
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x92 0x01 # DST_2 for VC=0 & DT=Frame End Code
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0xAD 0x15 # Map DST_0/1/2 to to MIPI PHY Controller 1 (Port A)
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x52 0x02 # Control ST_ID=2 from SER to DES's Pipe Z
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x8B 0x07 # Enable mapping SRC_0/1/2 -> DST_0/1/2
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x8D 0x1E # SRC_0 for VC=0 & DT=YUV422-8bit
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x8E 0x1E # DST_0 for VC=0 & DT=YUV422-8bit
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x8F 0x00 # SRC_1 for VC=0 & DT=Frame Start Code
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x90 0x00 # DST_1 for VC=0 & DT=Frame Start Code
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x91 0x01 # SRC_2 for VC=0 & DT=Frame End Code
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x92 0x01 # DST_2 for VC=0 & DT=Frame End Code
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0xAD 0x15 # Map DST_0/1/2 to to MIPI PHY Controller 1 (Port A)
 
 # For Pipe U DST VC=1
 # i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x00 0x53 0x03 # Control ST_ID=3 from SER to DES's Pipe U
