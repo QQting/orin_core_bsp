@@ -11,4 +11,7 @@ drivers/gmsl2_sensors.mod.o
 drivers/gmsl2_sensors.o
 drivers/Module.symvers
 drivers/modules.order
-drivers/new-overlay.dtbo
+drivers/*.dtbo
+drivers/*.preprocessed
+rqx59g/*.dtbo
+rqx59g/*.preprocessed
