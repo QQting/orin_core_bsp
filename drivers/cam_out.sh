@@ -88,9 +88,13 @@ do
         fi
         exec bash -i'
 done
-sleep 1
+sleep 0.1
+
+echo "sending deskew_init signal"
 sudo ./deskew.sh 2 0x4b
 sudo ./deskew.sh 2 0x6b
 sudo ./deskew.sh 7 0x4b
 sudo ./deskew.sh 7 0x6b
+
+echo "start cam_out testing..."
 

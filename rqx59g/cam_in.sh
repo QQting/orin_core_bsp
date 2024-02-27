@@ -40,6 +40,7 @@ echo "============================="
 echo " All configurations are done!"
 echo "============================="
 
+echo "sending deskew_init signal"
 sudo ./deskew_max9296.sh 30 0x48
 sudo ./deskew_max9296.sh 31 0x48
 
@@ -62,3 +63,4 @@ do
         exec bash -i'
 done
 
+echo "start cam_in testing..."
