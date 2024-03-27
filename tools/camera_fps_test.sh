@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Pre-configure stream count
-STREAM_COUNT=1800  # 1min=1*60*30
+#STREAM_COUNT=1800  # 1min=1*60*30
 # STREAM_COUNT=108000  # 1hr=60*60*30
 # STREAM_COUNT=1080000  # 10hr=10*60*60*30
-#STREAM_COUNT=1296000  # 12hr
+STREAM_COUNT=1296000  # 12hr
 
 # Pre-configure the delta tolerance, default 0.02 means 33.33-0.02 <= delta <= 33.33+0.02
 DELTA_TOLERANCE=0.02

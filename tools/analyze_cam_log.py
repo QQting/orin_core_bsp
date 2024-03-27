@@ -41,8 +41,11 @@ def cam_log_analysys(file_path, tolerance=0.02, verbose=False):
                 if 'fps:' in line:
                     fps_value = float(line.split('fps:')[1].split()[0])
                     fps_values.append(fps_value)
-                if verbose and (frame_drop_detected or frame_rate_error_detected):
-                    print(f'Error detected: {line}')
+                if (frame_drop_detected or frame_rate_error_detected):
+                    with open(file_path+'_result', 'a') as result_file:
+                        result_file.write(line)
+                    if verbose == True:
+                        print(f'Error detected: {line}')
     except:
         print("Failed to open `" + file_path + "`!")
         sys.exit(1)
