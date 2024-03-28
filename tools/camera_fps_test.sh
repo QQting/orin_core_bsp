@@ -1,10 +1,11 @@
 #!/bin/bash
 
 # Pre-configure stream count
-#STREAM_COUNT=1800  # 1min=1*60*30
+# STREAM_COUNT=1800  # 1min=1*60*30
 # STREAM_COUNT=108000  # 1hr=60*60*30
 # STREAM_COUNT=1080000  # 10hr=10*60*60*30
 STREAM_COUNT=1296000  # 12hr
+#STREAM_COUNT=5184000  # 48hr
 
 # Pre-configure the delta tolerance, default 0.02 means 33.33-0.02 <= delta <= 33.33+0.02
 DELTA_TOLERANCE=0.02
@@ -26,6 +27,7 @@ VIDEO_12=3
 VIDEO_13=3
 VIDEO_14=3
 VIDEO_15=3
+CAM_TYPE=($VIDEO_0 $VIDEO_1 $VIDEO_2 $VIDEO_3 $VIDEO_4 $VIDEO_5 $VIDEO_6 $VIDEO_7 $VIDEO_8 $VIDEO_9 $VIDEO_10 $VIDEO_11 $VIDEO_12 $VIDEO_13 $VIDEO_14 $VIDEO_15)
 
 verbose=0
 for arg in "$@"
@@ -62,41 +64,79 @@ LOG_DIR=logs
 LOG_PREFIX="$TS"_video
 # ps a | grep v4l2-ctl | grep -v grep | awk '{print $1}' | xargs -n 1 kill -TERM 2> /dev/null # kill exist processes before streaming
 echo "Start streaming..."
-if [[ $verbose == 1 ]]; then
-    [ ! $VIDEO_0 -eq 0 ] && ./v4l2_stream.sh 0 $VIDEO_0 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"0 &
-    [ ! $VIDEO_1 -eq 0 ] && ./v4l2_stream.sh 1 $VIDEO_1 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"1 &
-    [ ! $VIDEO_2 -eq 0 ] && ./v4l2_stream.sh 2 $VIDEO_2 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"2 &
-    [ ! $VIDEO_3 -eq 0 ] && ./v4l2_stream.sh 3 $VIDEO_3 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"3 &
-    [ ! $VIDEO_4 -eq 0 ] && ./v4l2_stream.sh 4 $VIDEO_4 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"4 &
-    [ ! $VIDEO_5 -eq 0 ] && ./v4l2_stream.sh 5 $VIDEO_5 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"5 &
-    [ ! $VIDEO_6 -eq 0 ] && ./v4l2_stream.sh 6 $VIDEO_6 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"6 &
-    [ ! $VIDEO_7 -eq 0 ] && ./v4l2_stream.sh 7 $VIDEO_7 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"7 &
-    [ ! $VIDEO_8 -eq 0 ] && ./v4l2_stream.sh 8 $VIDEO_8 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"8 &
-    [ ! $VIDEO_9 -eq 0 ] && ./v4l2_stream.sh 9 $VIDEO_9 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"9 &
-    [ ! $VIDEO_10 -eq 0 ] && ./v4l2_stream.sh 10 $VIDEO_10 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"10 &
-    [ ! $VIDEO_11 -eq 0 ] && ./v4l2_stream.sh 11 $VIDEO_11 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"11 &
-    [ ! $VIDEO_12 -eq 0 ] && ./v4l2_stream.sh 12 $VIDEO_12 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"12 &
-    [ ! $VIDEO_13 -eq 0 ] && ./v4l2_stream.sh 13 $VIDEO_13 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"13 &
-    [ ! $VIDEO_14 -eq 0 ] && ./v4l2_stream.sh 14 $VIDEO_14 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"14 &
-    [ ! $VIDEO_15 -eq 0 ] && ./v4l2_stream.sh 15 $VIDEO_15 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"15 &
-else
-    [ ! $VIDEO_0 -eq 0 ] && ./v4l2_stream.sh 0 $VIDEO_0 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"0 > /dev/null 2>&1 &
-    [ ! $VIDEO_1 -eq 0 ] && ./v4l2_stream.sh 1 $VIDEO_1 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"1 > /dev/null 2>&1 &
-    [ ! $VIDEO_2 -eq 0 ] && ./v4l2_stream.sh 2 $VIDEO_2 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"2 > /dev/null 2>&1 &
-    [ ! $VIDEO_3 -eq 0 ] && ./v4l2_stream.sh 3 $VIDEO_3 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"3 > /dev/null 2>&1 &
-    [ ! $VIDEO_4 -eq 0 ] && ./v4l2_stream.sh 4 $VIDEO_4 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"4 > /dev/null 2>&1 &
-    [ ! $VIDEO_5 -eq 0 ] && ./v4l2_stream.sh 5 $VIDEO_5 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"5 > /dev/null 2>&1 &
-    [ ! $VIDEO_6 -eq 0 ] && ./v4l2_stream.sh 6 $VIDEO_6 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"6 > /dev/null 2>&1 &
-    [ ! $VIDEO_7 -eq 0 ] && ./v4l2_stream.sh 7 $VIDEO_7 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"7 > /dev/null 2>&1 &
-    [ ! $VIDEO_8 -eq 0 ] && ./v4l2_stream.sh 8 $VIDEO_8 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"8 > /dev/null 2>&1 &
-    [ ! $VIDEO_9 -eq 0 ] && ./v4l2_stream.sh 9 $VIDEO_9 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"9 > /dev/null 2>&1 &
-    [ ! $VIDEO_10 -eq 0 ] && ./v4l2_stream.sh 10 $VIDEO_10 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"10 > /dev/null 2>&1 &
-    [ ! $VIDEO_11 -eq 0 ] && ./v4l2_stream.sh 11 $VIDEO_11 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"11 > /dev/null 2>&1 &
-    [ ! $VIDEO_12 -eq 0 ] && ./v4l2_stream.sh 12 $VIDEO_12 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"12 > /dev/null 2>&1 &
-    [ ! $VIDEO_13 -eq 0 ] && ./v4l2_stream.sh 13 $VIDEO_13 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"13 > /dev/null 2>&1 &
-    [ ! $VIDEO_14 -eq 0 ] && ./v4l2_stream.sh 14 $VIDEO_14 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"14 > /dev/null 2>&1 &
-    [ ! $VIDEO_15 -eq 0 ] && ./v4l2_stream.sh 15 $VIDEO_15 $STREAM_COUNT $LOG_DIR/"$LOG_PREFIX"15 > /dev/null 2>&1 &
-fi
+
+    #echo "video0-3"
+    for ((i=0;i<=3;i++)); 
+    do
+        X=0
+        Y=$((260*$i))
+        gnome-terminal  --geometry 50x10+$X+$Y --title=video$i -- bash -c '
+            date -R
+            bash -c "./v4l2_stream.sh '$i' '${CAM_TYPE[$i]}' '$STREAM_COUNT' '$LOG_DIR'/'$LOG_PREFIX''$i'"
+            ret=$?
+            if [[ $ret -eq 0 ]]; then
+                date -R
+                echo ====
+                echo PASS
+                echo ====
+            fi
+            exec bash -i'
+    done
+    
+    # echo "video4-7"
+    # for ((i=4;i<=7;i++)); 
+    # do
+    #     X=500
+    #     Y=$((260*($i-4)))
+    #     gnome-terminal  --geometry 50x10+$X+$Y --title=video$i -- bash -c '
+    #         date -R
+    #         bash -c "./v4l2_stream.sh '$i' '${CAM_TYPE[$i]}' '$STREAM_COUNT' '$LOG_DIR'/'$LOG_PREFIX''$i'"
+    #         ret=$?
+    #         if [[ $ret -eq 0 ]]; then
+    #             date -R
+    #             echo ====
+    #             echo PASS
+    #             echo ====
+    #         fi
+    #         exec bash -i'
+    # done
+    
+    #echo "video8-11"
+    for ((i=8;i<=11;i++)); 
+    do
+        X=1000
+        Y=$((260*($i-8)))
+        gnome-terminal  --geometry 50x10+$X+$Y --title=video$i -- bash -c '
+            date -R
+            bash -c "./v4l2_stream.sh '$i' '${CAM_TYPE[$i]}' '$STREAM_COUNT' '$LOG_DIR'/'$LOG_PREFIX''$i'"
+            ret=$?
+            if [[ $ret -eq 0 ]]; then
+                date -R
+                echo ====
+                echo PASS
+                echo ====
+            fi
+            exec bash -i'
+    done
+    
+    #echo "video12-15"
+    for ((i=12;i<=15;i++)); 
+    do
+        X=1500
+        Y=$((260*($i-12)))
+        gnome-terminal  --geometry 50x10+$X+$Y --title=video$i -- bash -c '
+            date -R
+            bash -c "./v4l2_stream.sh '$i' '${CAM_TYPE[$i]}' '$STREAM_COUNT' '$LOG_DIR'/'$LOG_PREFIX''$i'"
+            ret=$?
+            if [[ $ret -eq 0 ]]; then
+                date -R
+                echo ====
+                echo PASS
+                echo ====
+            fi
+            exec bash -i'
+    done
+
 
 # deskew
 sleep 0.5
