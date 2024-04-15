@@ -3,7 +3,7 @@ BUILD_DIR ?= $(shell pwd)
 ARCH ?= arm64
 KERNEL_SRC_DIR  ?= /lib/modules/$(shell uname -r)/build
 DTS_FILE ?= sensing-camera-overlay-max9296
-# DTS_FILE ?= sensing-camera-overlay-max9296_2lanes
+#DTS_FILE ?= sensing-camera-overlay-max9296_leopard-board
 
 obj-m := gmsl2_sensors.o
 

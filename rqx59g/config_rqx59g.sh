@@ -88,11 +88,25 @@ sleep 0.1
 # The 1st SER: MAX9295
 #######################
 red_print "[9295]: serializer-a"
-i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x00 0x00 $SER_A_8B
-if [ $? -eq 0 ];
-then
+val=$(i2ctransfer -f -y $I2C_SWITCH w2@$SER_DEFAULT 0x00 0x00 r1)
+ret=$?
+if [[ $ret -eq 0 && $val -eq $((16#80)) ]]; then
     SER_A_CONNECTED=1
     echo "SER-A connected"
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x00 0x00 $SER_A_8B
+elif [[ $ret -eq 0 && $val -eq $((16#00)) ]]; then
+    # there is a confliction when using Leopard board
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x00 0x00 $SER_A_8B
+    val=$(i2ctransfer -f -y $I2C_SWITCH w2@$SER_A_7B 0x00 0x00 r1)
+    ret=$?
+    if [[ $ret -eq 0 && $val -eq $((16#84)) ]]; then
+            SER_A_CONNECTED=1
+            echo "SER-A connected"
+    else
+            echo "SER-A NOT connected"
+    fi
+else
+    echo "SER-A NOT connected"
 fi
 
 i2ctransfer -f -y $I2C_SWITCH w3@$SER_A_7B 0x00 0x10 0x21 # One-shot reset SER-A and set to LINK A
@@ -159,11 +173,25 @@ sleep 0.1
 # The 2nd SER: MAX9295
 #######################
 red_print "[9295]: serializer-b"
-i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x00 0x00 $SER_B_8B
-if [ $? -eq 0 ];
-then
+val=$(i2ctransfer -f -y $I2C_SWITCH w2@$SER_DEFAULT 0x00 0x00 r1)
+ret=$?
+if [[ $ret -eq 0 && $val -eq $((16#80)) ]]; then
     SER_B_CONNECTED=1
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x00 0x00 $SER_B_8B
     echo "SER-B connected"
+elif [[ $ret -eq 0 && $val -eq $((16#00)) ]]; then
+    # There is 0x40 device in i2c-1 for Leopard board which will ack 0x00
+    i2ctransfer -f -y $I2C_SWITCH w3@$SER_DEFAULT 0x00 0x00 $SER_B_8B
+    val=$(i2ctransfer -f -y $I2C_SWITCH w2@$SER_B_7B 0x00 0x00 r1)
+    ret=$?
+    if [[ $ret -eq 0 && $val -eq $((16#C0)) ]]; then
+            SER_B_CONNECTED=1
+            echo "SER-B connected"
+    else
+            echo "SER-B NOT connected"
+    fi
+else
+    echo "SER-B NOT connected"
 fi
 
 i2ctransfer -f -y $I2C_SWITCH w3@$SER_B_7B 0x00 0x10 0x22 # One-shot reset SER-B and set to LINK B
@@ -294,8 +322,9 @@ i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x6D 0x15 # Map DST_0/1/2 to t
 
 # DES's Port A settings
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x20 0x2F # DPHY 1.5 Gbps
-# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x20 0x37 # DPHY 2.3 Gbps for 8MP camera
 i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x4A 0xC0 # 4 lanes for Port A
+# Leopard 2-lane settings:
+# i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x20 0x39 # DPHY 2.5 Gbps
 # i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0x4A 0x40 # 2 lanes for Port A
 
 # Don't care DES's Port B because it is not conencted to MIPI
