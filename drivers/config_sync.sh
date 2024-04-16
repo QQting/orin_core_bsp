@@ -284,29 +284,29 @@ else
 fi
 
 # SYNC
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0xA0 0x08
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0xAF 0x9F
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0xA0 0x08 # fsync generation is off; manual fsync
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x04 0xAF 0x9F # fsync type GMSL2; enable pipe 0/1/2/3 in frame sync generation
 
 sleep 0.5
 
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x06 0x83
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x07 0xA7
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x3D 0xA7
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x74 0xA7
-i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0xAA 0xA7
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x06 0x83 # GPIO2(MFP2): GPIO_RX_DIS; GPIO_TX_EN & GPIO_OUT_DIS
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x07 0xA7 # GPIO2(MFP2): pulldown & push-pull; GPIO_TX_ID=0x07
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x3D 0xA7 # GPIO0_B 2: GPIO_TX_EN; GPIO_TX_ID=0x07
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0x74 0xA7 # GPIO0_C 2: GPIO_TX_EN; GPIO_TX_ID=0x07
+i2ctransfer -f -y $I2C_SWITCH w3@$DESER_ADDR 0x03 0xAA 0xA7 # GPIO0_D 2: GPIO_TX_EN; GPIO_TX_ID=0x07
 
 sleep 0.5
 
 # LINKA
 echo "[sync]: link-a"
-i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD3 0x85
-i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD6 0x85
+i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD3 0x85 # GPIO7(MFP7): GPIO_RX_EN; GPIO_TX_DIS; GPIO_OUT_DIS
+i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD6 0x85 # GPIO8(MFP8): GPIO_RX_EN; GPIO_TX_DIS; GPIO_OUT_DIS
 #i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x00 0x10 0x21
 sleep 0.5
-i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD3 0x84
-i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD5 0x07
-i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD6 0x84
-i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD8 0x07
+i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD3 0x84 # GPIO_RX_EN; GPIO_TX_DIS; GPIO_OUT_EN
+i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD5 0x07 # GPIO_RX_ID=0x07
+i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD6 0x84 # GPIO_RX_EN; GPIO_TX_DIS
+i2ctransfer -f -y $I2C_SWITCH w3@$SER0_7B 0x02 0xD8 0x07 # GPIO_RX_ID=0x07
 
 # LINKB
 echo "[sync]: link-b"
